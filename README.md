@@ -1,6 +1,13 @@
-Clientside Helper function to call Runpod deployed API:
+Runpod API Deployment Code:
 
 https://github.com/justinwlin/runpodWhisperx
+
+Clientside helper functions to call Runpod deployed API:
+
+https://github.com/justinwlin/runpod_whisperx_serverless_clientside_code
+
+Helper functions to generate SRT transcriptions:
+
 https://github.com/justinwlin/WhisperXSRTGenerator
 
 ## Usage Example
