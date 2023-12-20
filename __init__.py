@@ -3,6 +3,9 @@ from .runpod_client_helper import (
     get_transcription_status,
     wait_for_transcription_completion,
     transcribe_audio,
+    convert_to_mp3_and_base64,
+    decode_base64_to_mp3,
+    checkFileSize
 )
 
 __all__ = [
@@ -10,4 +13,7 @@ __all__ = [
     "get_transcription_status",
     "wait_for_transcription_completion",
     "transcribe_audio",
+    "convert_to_mp3_and_base64",
+    "decode_base64_to_mp3",
+    "checkFileSize"
 ]
