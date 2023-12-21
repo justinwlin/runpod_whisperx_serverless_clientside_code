@@ -11,12 +11,12 @@ class NoOutputFromRunpodException(Exception):
     """Exception raised when there is no output from Runpod."""
 
 
-def send_async_transcription_request(base64_string, api_key, server_endpoint):
+def send_async_transcription_request(base64_string_or_url, api_key, server_endpoint):
     """
     Sends an asynchronous transcription request to Runpod.
 
     Args:
-        base64_string (str): Base64-encoded audio data.
+        base64_string_or_url (str): Base64-encoded audio data or a URL that starts with "http".
         api_key (str): Runpod API key.
         server_endpoint (str): Server endpoint.
 
@@ -25,10 +25,10 @@ def send_async_transcription_request(base64_string, api_key, server_endpoint):
     """
     url = f"https://api.runpod.ai/v2/{server_endpoint}/run"
 
-    payload_base64 = {"audio_base_64": base64_string}
-    payload_url = {"audio_url": base64_string}
+    payload_base64 = {"audio_base_64": base64_string_or_url}
+    payload_url = {"audio_url": base64_string_or_url}
 
-    if(base64_string.startswith("http")):
+    if(base64_string_or_url.startswith("http")):
         payload = json.dumps({"input": payload_url})
     else:
         payload = json.dumps({"input": payload_base64})
@@ -99,7 +99,7 @@ def transcribe_audio(base64_string_or_url, runpod_api_key, server_endpoint, poll
     Transcribes audio using Runpod's API.
 
     Args:
-        base64_string (str): Base64-encoded audio data.
+        base64_string_or_url (str): Base64-encoded audio data or a URL that starts with "http".
         api_key (str): Runpod API key.
         server_endpoint (str): Server endpoint.
 
