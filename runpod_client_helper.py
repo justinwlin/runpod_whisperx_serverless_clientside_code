@@ -24,7 +24,14 @@ def send_async_transcription_request(base64_string, api_key, server_endpoint):
         str: Job ID of the transcription request.
     """
     url = f"https://api.runpod.ai/v2/{server_endpoint}/run"
-    payload = json.dumps({"input": {"audio_base_64": base64_string}})
+
+    payload_base64 = {"audio_base_64": base64_string}
+    payload_url = {"audio_url": base64_string}
+
+    if(base64_string.startswith("http")):
+        payload = json.dumps({"input": payload_url})
+    else:
+        payload = json.dumps({"input": payload_base64})
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}",
@@ -87,7 +94,7 @@ def wait_for_transcription_completion(
                 )
 
 
-def transcribe_audio(base64_string, runpod_api_key, server_endpoint, polling_interval=20):
+def transcribe_audio(base64_string_or_url, runpod_api_key, server_endpoint, polling_interval=20):
     """
     Transcribes audio using Runpod's API.
 
@@ -99,7 +106,7 @@ def transcribe_audio(base64_string, runpod_api_key, server_endpoint, polling_int
     Returns:
         dict: Transcription output or status.
     """
-    job_id = send_async_transcription_request(base64_string, runpod_api_key, server_endpoint)
+    job_id = send_async_transcription_request(base64_string_or_url, runpod_api_key, server_endpoint)
     return wait_for_transcription_completion(job_id, runpod_api_key, server_endpoint, polling_interval)
 
 
