@@ -5,7 +5,8 @@ from .runpod_client_helper import (
     transcribe_audio,
     convert_to_mp3_and_base64,
     decode_base64_to_mp3,
-    checkFileSize
+    checkFileSize,
+    trim_audio_to_size
 )
 
 __all__ = [
@@ -16,4 +17,5 @@ __all__ = [
     "convert_to_mp3_and_base64",
     "decode_base64_to_mp3",
     "checkFileSize"
+    "trim_audio_to_size"
 ]

@@ -264,3 +264,41 @@ def checkFileSize(input_path):
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
+
+def trim_audio_to_size(input_file: str, target_size_mb: float) -> str:
+    """
+    Trim the audio file to ensure it's below the specified size in MB.
+
+    Args:
+        input_file (str): The path to the input audio file.
+        target_size_mb (float): The target file size in MB.
+
+    Returns:
+        str: The path to the trimmed audio file.
+    """
+    # Calculate current file size in MB
+    current_size_mb = os.path.getsize(input_file) / (1024 * 1024)
+
+    # If the file is already smaller than the target size, return the original file
+    if current_size_mb <= target_size_mb:
+        print(f"File size is already within the limit. No trimming needed.")
+        return input_file
+
+    # Calculate duration of the audio file
+    probe = ffmpeg.probe(input_file)
+    duration_seconds = float(probe['streams'][0]['duration'])
+
+    # Calculate target duration based on target size
+    target_duration_seconds = (target_size_mb / current_size_mb) * duration_seconds
+
+    # Trim the audio file to the target duration
+    output_file = input_file
+    (
+        ffmpeg
+        .input(input_file)
+        .output(output_file, t=target_duration_seconds)
+        .run(overwrite_output=True)
+    )
+
+    print(f"Trimmed audio saved as {output_file}")
+    return output_file
