@@ -216,6 +216,35 @@ def convert_to_mp3_and_base64(input_path):
         return None
 
 
+def convert_to_mono_mp3(input_path, output_path):
+    """
+    Converts an audio file to a mono MP3 file with a bitrate of 32k.
+
+    This function takes an input audio file, converts it to a mono MP3 file with a
+    bitrate of 32k, and saves the output to a specified file path.
+
+    Args:
+    input_path (str): The file path of the input audio file.
+    output_path (str): The file path where the converted MP3 file will be saved.
+
+    Returns:
+    None: The function does not return a value but saves the converted MP3 file at the specified path.
+
+    Raises:
+    ffmpeg.Error: If an error occurs during the conversion process.
+    """
+    try:
+        # Convert the file to MP3
+        (
+            ffmpeg.input(input_path)
+            .output(output_path, ac=1, ar="22050", ab="32k", format="mp3")
+            .run(overwrite_output=True)
+        )
+        print(f"Conversion to MP3 successful. MP3 file created at {output_path}")
+
+    except ffmpeg.Error as e:
+        print(f"An error occurred: {e}")
+        
 def decode_base64_to_mp3(base64_data, output_mp3_path):
     """
     Decodes a Base64 encoded string back into an MP3 file.
